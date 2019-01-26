@@ -1,0 +1,148 @@
+﻿<Window x:Class="MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProyectoEstacionSki"
+        mc:Ignorable="d"
+        Title="Estaciones de esquí" Icon="img/nieve.ico"
+        Height="686" Width="804" MinHeight="686" MinWidth="804">
+    <Window.Resources>
+        <Style TargetType="{x:Type DockPanel}" x:Key="PrincipalDockPanel">
+            <Setter Property="Background">
+                <Setter.Value>
+                    <ImageBrush ImageSource="img/fondo.jpg" Stretch="UniformToFill"/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="LastChildFill" Value="True"/>
+        </Style>
+
+        <Style TargetType="{x:Type TextBlock}" x:Key="TituloTextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="FontFamily" Value="Segoe Print"/>
+            <Setter Property="FontSize" Value="60"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect ShadowDepth="5"/>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Foreground">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF4784DC" Offset="0"/>
+                        <GradientStop Color="White" Offset="1"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="{x:Type Border}" x:Key="PrincipalBorder">
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderThickness" Value="5"/>
+            <Setter Property="Background" Value="LightCyan"/>
+            <Setter Property="CornerRadius" Value="20"/>
+            <Setter Property="Margin" Value="70, 30, 70, 25"/>
+            <Setter Property="Padding" Value="40, 0, 40, 0"/>
+        </Style>
+
+        <Style TargetType="{x:Type TextBlock}" x:Key="DatosTextBlock">
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0, 0, 5, 0"/>
+        </Style>
+
+        <Style TargetType="{x:Type TextBox}">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="{x:Type TextBlock}" x:Key="PieCopyrightTextBlock">
+            <Setter Property="FontSize" Value="22"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="{x:Type Border}" x:Key="ImagenEstacionBorder">
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Width" Value="200"/>
+            <Setter Property="Margin" Value="20, 0, 20, 10"/>
+        </Style>
+
+        <Style TargetType="{x:Type Image}" x:Key="AbiertaCerradaImagen">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Width" Value="30"/>
+            <Setter Property="Margin" Value="5, 0, 0, 0"/>
+        </Style>
+        
+        <ControlTemplate x:Key="ButtonControlTemplate1" TargetType="{x:Type Button}">
+            <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True" CornerRadius="4" Padding="4">
+                <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsDefaulted" Value="True">
+                    <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" TargetName="border" Value="#FFBEE6FD"/>
+                    <Setter Property="BorderBrush" TargetName="border" Value="#FF3C7FB1"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" TargetName="border" Value="#FFC4E5F6"/>
+                    <Setter Property="BorderBrush" TargetName="border" Value="#FF2C628B"/>
+                </Trigger>
+                <Trigger Property="ToggleButton.IsChecked" Value="True">
+                    <Setter Property="Background" TargetName="border" Value="#FFBCDDEE"/>
+                    <Setter Property="BorderBrush" TargetName="border" Value="#FF245A83"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" TargetName="border" Value="#FFF4F4F4"/>
+                    <Setter Property="BorderBrush" TargetName="border" Value="#FFADB2B5"/>
+                    <Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="#FF838383"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </Window.Resources>
+
+    <DockPanel Style="{StaticResource PrincipalDockPanel}">
+        <TextBlock DockPanel.Dock="Top" Style="{StaticResource TituloTextBlock}">Estaciones de esquí</TextBlock>
+        <TextBlock DockPanel.Dock="Bottom" Style="{StaticResource PieCopyrightTextBlock}">©</TextBlock>
+        <Border Style="{StaticResource PrincipalBorder}">
+            <DockPanel LastChildFill="True">
+                <DockPanel DockPanel.Dock="Top" Margin="0, 10, 0, 10">
+                    <Button HorizontalAlignment="Left" Template="{DynamicResource ButtonControlTemplate1}">Cargar listado</Button>
+                    <Button HorizontalAlignment="Right" Template="{DynamicResource ButtonControlTemplate1}">Guardar listado</Button>
+                </DockPanel>
+                <DockPanel DockPanel.Dock="Bottom" Height="150" Margin="0, 30, 0, 0">
+                    <Border DockPanel.Dock="Right" Style="{StaticResource ImagenEstacionBorder}">
+                        <Image/>
+                    </Border>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="70"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Style="{StaticResource DatosTextBlock}">Nombre</TextBlock>
+                        <TextBox Grid.Column="1"/>
+                        <TextBlock Grid.Row="1" Style="{StaticResource DatosTextBlock}">País</TextBlock>
+                        <TextBox Grid.Row="1" Grid.Column="1"/>
+                        <TextBlock Grid.Row="2" Style="{StaticResource DatosTextBlock}">Kilometros</TextBlock>
+                        <TextBox Grid.Row="2" Grid.Column="1"/>
+                        <TextBlock Grid.Row="3" Style="{StaticResource DatosTextBlock}">Abierta</TextBlock>
+                        <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="1">
+                            <CheckBox VerticalAlignment="Center"/>
+                            <Image Style="{StaticResource AbiertaCerradaImagen}" Source="img/sad.png" />
+                        </StackPanel>
+                    </Grid>
+                </DockPanel>
+
+                <ListBox/>
+            </DockPanel>
+        </Border>
+    </DockPanel>
+</Window>
