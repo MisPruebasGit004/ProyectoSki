@@ -58,6 +58,11 @@
         <Style TargetType="{x:Type TextBlock}" x:Key="PieCopyrightTextBlock">
             <Setter Property="FontSize" Value="22"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Text" Value="Javi"/>
+                </Trigger>
+            </Style.Triggers>
         </Style>
 
         <Style TargetType="{x:Type Border}" x:Key="ImagenEstacionBorder">
@@ -71,6 +76,22 @@
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Width" Value="30"/>
             <Setter Property="Margin" Value="5, 0, 0, 0"/>
+        </Style>
+
+        <Style TargetType="{x:Type TextBlock}" x:Key="AbiertaTextBlock">
+            <Setter Property="Margin" Value="5, 0, 0, 0"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="3"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Abierta}" Value="True">
+                    <Setter Property="Text" Value="Abierta"/>
+                    <Setter Property="Background" Value="Green"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Abierta}" Value="False">
+                    <Setter Property="Text" Value="Cerrada"/>
+                    <Setter Property="Background" Value="Red"/>
+                </DataTrigger>
+            </Style.Triggers>
         </Style>
         
         <ControlTemplate x:Key="RedondeadoButtonControlTemplate" TargetType="{x:Type Button}">
@@ -100,6 +121,9 @@
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
+
+
+        <local:ConversorPais x:Key="conversorPais"/>
     </Window.Resources>
 
     <DockPanel Style="{StaticResource PrincipalDockPanel}">
@@ -141,7 +165,19 @@
                     </Grid>
                 </DockPanel>
 
-                <ListBox/>
+                <ListBox x:Name="EstacionesListBox" ItemsSource="{Binding}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Nombre}" Margin="0, 0, 5, 0"/>
+                                <Image Source="{Binding Pais, Converter={StaticResource conversorPais}}" Margin="0, 0, 10, 0"/>
+                                <TextBlock Text="{Binding Kilometros}"/>
+                                <TextBlock>km.</TextBlock>
+                                <TextBlock Style="{StaticResource AbiertaTextBlock}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </DockPanel>
         </Border>
     </DockPanel>

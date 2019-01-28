@@ -9,7 +9,9 @@ Class MainWindow
 
     Private Sub CargarButton_Click(sender As Object, e As RoutedEventArgs) Handles CargarButton.Click
         estacionesFileDialog.ShowDialog()
-        Estacion.GetEstaciones(estacionesFileDialog.FileName)
+        If estacionesFileDialog.FileName IsNot "" Then
+            EstacionesListBox.DataContext = Estacion.GetEstaciones(estacionesFileDialog.FileName)
+        End If
     End Sub
     'en listbox: ItemSource = "{Binding}" para que coja toooda la lista
 End Class
