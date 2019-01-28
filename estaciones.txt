@@ -1,0 +1,3 @@
+Formigal,120,España,True,http://ski.radio3w.com/wp-content/uploads/sites/14/2014/02/LOGO-FORMIGAL.jpg
+Sierra Nevada,150,España,True,https://www.nevasport.com/fotos/171017/735163-Nuevo-logotipo-Sierra-Nevada-2017-2018.jpg
+Chamonix,60,Francia,False,https://pbs.twimg.com/profile_images/816204970617929728/7X8ZrcoE_400x400.jpg
