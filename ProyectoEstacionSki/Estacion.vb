@@ -70,6 +70,13 @@ Public Class Estacion
         RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(propertyName))
     End Sub
 
+    ''' <summary>
+    ''' Lee el archivo especificado en la ruta y "mapea" su contenido a una ObservableCollection
+    ''' donde cada linea se corresponde a un objeto Estacion. Si la ruta no existe devuelve Nothing.
+    ''' </summary>
+    ''' <param name="ruta">Ruta del archivo a leer</param>
+    ''' <returns>ObservableCollection de objetos Estacion,
+    ''' o Nothing si la ruta no existe.</returns>
     Public Shared Function GetEstaciones(ruta As String) As ObservableCollection(Of Estacion)
         Dim lista As ObservableCollection(Of Estacion) = Nothing
 
@@ -108,6 +115,11 @@ Public Class Estacion
         Return lista
     End Function
 
+    ''' <summary>
+    ''' Sobreescritura del método ToString() usada en la
+    ''' escritura del archivo al guardar.
+    ''' </summary>
+    ''' <returns>Propiedades del objeto Estacion formateadas para su guardado en fichero.</returns>
     Public Overrides Function ToString() As String
         Return Nombre & "," & Kilometros & "," & Pais & "," & Abierta & "," & Logo
     End Function
