@@ -1,4 +1,5 @@
 ﻿Imports Microsoft.Win32
+Imports System.IO
 Class MainWindow
     Dim estacionesFileDialog As OpenFileDialog
     Dim estacionesSaveFileDialog As SaveFileDialog
@@ -26,9 +27,18 @@ Class MainWindow
         estacionesSaveFileDialog.ShowDialog()
 
         If estacionesSaveFileDialog.FileName IsNot "" Then
-            Dim writer As New IO.StreamWriter(estacionesSaveFileDialog.FileName, True, Text.Encoding.Default)
+            Dim writer As StreamWriter = Nothing
+            Try
+                writer = New StreamWriter(estacionesSaveFileDialog.FileName, False, Text.Encoding.Default)
+            Catch ex As Exception
+                Throw New Exception("Error al crear el flujo de escritura: " & ex.Message)
+            End Try
             For Each estacion As Estacion In EstacionesListBox.Items
-                writer.WriteLine(estacion.ToString())
+                Try
+                    writer.WriteLine(estacion.ToString())
+                Catch ex As Exception
+                    Throw New Exception("Error al escribir una linea: " & ex.Message)
+                End Try
             Next
             writer.Close()
         End If

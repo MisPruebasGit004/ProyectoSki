@@ -1,6 +1,7 @@
 ﻿Imports System.Collections.ObjectModel
 Imports System.ComponentModel
 Imports System.Runtime.CompilerServices
+Imports System.IO
 
 Public Class Estacion
     Implements INotifyPropertyChanged
@@ -70,19 +71,39 @@ Public Class Estacion
     End Sub
 
     Public Shared Function GetEstaciones(ruta As String) As ObservableCollection(Of Estacion)
-        Dim lista As New ObservableCollection(Of Estacion)
+        Dim lista As ObservableCollection(Of Estacion) = Nothing
 
-        Dim reader As New IO.StreamReader(ruta, Text.Encoding.Default)
+        If File.Exists(ruta) Then
+            lista = New ObservableCollection(Of Estacion)
 
-        While Not reader.EndOfStream
-            Dim datosEstacion As String() = reader.ReadLine().Split(","c)
-            If datosEstacion.Length = 5 Then
-                'falta manejar excepcion
-                lista.Add(New Estacion(datosEstacion(0), Integer.Parse(datosEstacion(1)), datosEstacion(2), Boolean.Parse(datosEstacion(3)), datosEstacion(4)))
-            End If
-        End While
+            Dim reader As New StreamReader(ruta, Text.Encoding.Default)
 
-        reader.Close()
+            While Not reader.EndOfStream
+                Dim datosEstacion As String()
+                Try
+                    datosEstacion = reader.ReadLine().Split(","c)
+                Catch ex As Exception
+                    Throw New Exception("Error de lectura de linea al cargar fichero: " & ex.Message)
+                End Try
+                Dim km As Integer
+                Dim abier_cerrada As Boolean
+                If datosEstacion.Length = 5 Then
+                    Try
+                        km = Integer.Parse(datosEstacion(1))
+                    Catch ex As FormatException
+                        Throw New FormatException("Error al parsear los kilometros del archivo .txt: " & ex.Message)
+                    End Try
+                    Try
+                        abier_cerrada = Boolean.Parse(datosEstacion(3))
+                    Catch ex As FormatException
+                        Throw New FormatException("Error al parsear el estado abierta/cerrada(True/False) del archivo .txt: " & ex.Message)
+                    End Try
+                    lista.Add(New Estacion(datosEstacion(0), km, datosEstacion(2), abier_cerrada, datosEstacion(4)))
+                End If
+            End While
+
+            reader.Close()
+        End If
 
         Return lista
     End Function
