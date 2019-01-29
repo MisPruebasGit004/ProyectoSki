@@ -82,7 +82,13 @@ Public Class Estacion
             End If
         End While
 
+        reader.Close()
+
         Return lista
+    End Function
+
+    Public Overrides Function ToString() As String
+        Return Nombre & "," & Kilometros & "," & Pais & "," & Abierta & "," & Logo
     End Function
 
 End Class

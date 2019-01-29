@@ -58,6 +58,7 @@
         <Style TargetType="{x:Type TextBlock}" x:Key="PieCopyrightTextBlock">
             <Setter Property="FontSize" Value="22"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Text" Value="©"/>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Text" Value="Javi"/>
@@ -76,17 +77,21 @@
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Width" Value="30"/>
             <Setter Property="Margin" Value="5, 0, 0, 0"/>
+            <Setter Property="Source" Value="img/sad.png"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ElementName=AbiertaCheckBox, Path=IsChecked}" Value="True">
+                    <Setter Property="Source" Value="img/happy.png"/>
+                </DataTrigger>
+            </Style.Triggers>
         </Style>
 
         <Style TargetType="{x:Type TextBlock}" x:Key="AbiertaTextBlock">
             <Setter Property="Margin" Value="5, 0, 0, 0"/>
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="Padding" Value="3"/>
+            <Setter Property="Text" Value="Abierta"/>
+            <Setter Property="Background" Value="Green"/>
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Abierta}" Value="True">
-                    <Setter Property="Text" Value="Abierta"/>
-                    <Setter Property="Background" Value="Green"/>
-                </DataTrigger>
                 <DataTrigger Binding="{Binding Abierta}" Value="False">
                     <Setter Property="Text" Value="Cerrada"/>
                     <Setter Property="Background" Value="Red"/>
@@ -128,18 +133,18 @@
 
     <DockPanel Style="{StaticResource PrincipalDockPanel}">
         <TextBlock DockPanel.Dock="Top" Style="{StaticResource TituloTextBlock}">Estaciones de esquí</TextBlock>
-        <TextBlock DockPanel.Dock="Bottom" Style="{StaticResource PieCopyrightTextBlock}">©</TextBlock>
+        <TextBlock DockPanel.Dock="Bottom" Style="{StaticResource PieCopyrightTextBlock}"></TextBlock>
         <Border Style="{StaticResource PrincipalBorder}">
             <DockPanel LastChildFill="True">
                 <DockPanel DockPanel.Dock="Top" Margin="0, 10, 0, 10" LastChildFill="False">
-                    <Button x:Name="CargarButton" DockPanel.Dock="Left" Template="{DynamicResource RedondeadoButtonControlTemplate}">Cargar listado</Button>
-                    <Button x:Name="GuardarButton" DockPanel.Dock="Right" Template="{DynamicResource RedondeadoButtonControlTemplate}">Guardar listado</Button>
+                    <Button x:Name="CargarButton" DockPanel.Dock="Left" Template="{DynamicResource RedondeadoButtonControlTemplate}" Click="CargarButton_Click">Cargar listado</Button>
+                    <Button x:Name="GuardarButton" DockPanel.Dock="Right" Template="{DynamicResource RedondeadoButtonControlTemplate}" Click="GuardarButton_Click">Guardar listado</Button>
                 </DockPanel>
                 <DockPanel DockPanel.Dock="Bottom" Height="150" Margin="0, 30, 0, 0">
                     <Border DockPanel.Dock="Right" Style="{StaticResource ImagenEstacionBorder}">
-                        <Image/>
+                        <Image x:Name="EstacionImage" Source="{Binding Logo}"/>
                     </Border>
-                    <Grid>
+                    <Grid x:Name="DatosModificablesEstacionGrid">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="70"/>
                             <ColumnDefinition/>
@@ -152,28 +157,28 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock Style="{StaticResource DatosTextBlock}">Nombre</TextBlock>
-                        <TextBox Grid.Column="1"/>
+                        <TextBox Grid.Column="1" Text="{Binding Nombre}"/>
                         <TextBlock Grid.Row="1" Style="{StaticResource DatosTextBlock}">País</TextBlock>
-                        <TextBox Grid.Row="1" Grid.Column="1"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Pais}"/>
                         <TextBlock Grid.Row="2" Style="{StaticResource DatosTextBlock}">Kilometros</TextBlock>
-                        <TextBox Grid.Row="2" Grid.Column="1"/>
+                        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Kilometros}"/>
                         <TextBlock Grid.Row="3" Style="{StaticResource DatosTextBlock}">Abierta</TextBlock>
                         <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="1">
-                            <CheckBox VerticalAlignment="Center"/>
-                            <Image Style="{StaticResource AbiertaCerradaImagen}" Source="img/sad.png" />
+                            <CheckBox x:Name="AbiertaCheckBox" VerticalAlignment="Center" IsChecked="{Binding Abierta}"/>
+                            <Image Style="{StaticResource AbiertaCerradaImagen}"/>
                         </StackPanel>
                     </Grid>
                 </DockPanel>
 
-                <ListBox x:Name="EstacionesListBox" ItemsSource="{Binding}">
+                <ListBox x:Name="EstacionesListBox" ItemsSource="{Binding}" SelectionChanged="EstacionesListBox_SelectionChanged">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding Nombre}" Margin="0, 0, 5, 0"/>
+                                <TextBlock x:Name="ListBoxNombreTextBlock" Text="{Binding Nombre}" Margin="0, 0, 5, 0"/>
                                 <Image Source="{Binding Pais, Converter={StaticResource conversorPais}}" Margin="0, 0, 10, 0"/>
-                                <TextBlock Text="{Binding Kilometros}"/>
+                                <TextBlock x:Name="ListBoxKilometrosTextBlock" Text="{Binding Kilometros}"/>
                                 <TextBlock>km.</TextBlock>
-                                <TextBlock Style="{StaticResource AbiertaTextBlock}"/>
+                                <TextBlock x:Name="ListBoxAbiertaTextBlock" Style="{StaticResource AbiertaTextBlock}"/>
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
